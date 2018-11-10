@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig
 from PIL import Image
 import numpy as np
+from astropy.io import fits
 
+img_rows, img_cols = 275, 275
 spectral_types = ['A', 'B', 'O', 'F', 'G', 'K', 'M']
 
 def  Make_Stars(file_name, stars, ras, decs, types):
@@ -22,7 +24,8 @@ def  Make_Stars(file_name, stars, ras, decs, types):
                 found_count += 1
                 coordinate_found = i
     if (found_count == 1):
-        stars.append(class_Star.Star(ra, dec, types[coordinate_found], wavelength, flux)) 
+        if types[coordinate_found] in spectral_types:
+            stars.append(Star(ra, dec, types[coordinate_found], wavelength, flux)) 
 
 def fig2data(fig):
     fig.canvas.draw ( )
@@ -67,4 +70,4 @@ class Star(object):
         plt.axis('off')
         im = fig2data(figure)
         im_L = convert_to_L(im)
-        return im_L
+        return im_L.reshape(img_rows*img_cols)
