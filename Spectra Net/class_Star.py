@@ -8,6 +8,11 @@ from astropy.io import fits
 img_rows, img_cols = 275, 275
 spectral_types = ['A', 'B', 'O', 'F', 'G', 'K', 'M']
 
+def Make_Image(star, images, labels):
+    img = [(255 - x) * 1.0 / 255.0 for x in star.make_img()]
+    images.append(np.reshape(img, (img_rows, img_cols)))
+    labels.append(star.type_label)
+
 def  Make_Stars(file_name, stars, ras, decs, types):
     file = fits.open(file_name)
     wavelength = file[1].data['loglam']
@@ -28,10 +33,10 @@ def  Make_Stars(file_name, stars, ras, decs, types):
             stars.append(Star(ra, dec, types[coordinate_found], wavelength, flux)) 
 
 def fig2data(fig):
-    fig.canvas.draw ( )
+    fig.canvas.draw()
     w,h = fig.canvas.get_width_height()
     buf = np.fromstring ( fig.canvas.tostring_argb(), dtype=np.uint8 )
-    buf.shape = ( w, h,4 )
+    buf.shape = ( w, h, 4 )
     buf = np.roll ( buf, 3, axis = 2 )
     return buf
 
