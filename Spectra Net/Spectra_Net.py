@@ -4,8 +4,6 @@ from os import path
 from glob import glob
 from class_Star import Make_Image, Make_Stars
 from multiprocessing import Process, Manager, Pool
-import time
-start_time = time.time()
 
 if __name__ == "__main__":
     img_rows, img_cols = 275, 275
@@ -21,6 +19,7 @@ if __name__ == "__main__":
             p.apply_async(Make_Stars, [file_name, stars, ras, decs, types])
         p.close()
         p.join()
+        print('stars = ', len(stars))
 
         images = manager.list()
         labels = manager.list()
@@ -38,7 +37,7 @@ if __name__ == "__main__":
         images = images.reshape(len(stars), 75625)
 
         from sklearn.cross_validation import train_test_split
-        X_train, X_test, y_train, y_test = train_test_split(images, labels, test_size=0.02, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(images, labels, test_size=0.02, random_state=4)
 
 
         from keras.models import Sequential

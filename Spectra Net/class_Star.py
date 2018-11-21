@@ -19,13 +19,16 @@ def  Make_Stars(file_name, stars, ras, decs, types):
     wavelength = np.power(10, wavelength)
     flux = file[1].data['flux']
 
-    ra = (str)("%.6f" % file[0].header['PLUG_RA'])
-    dec = (str)("%.6f" % file[0].header['PLUG_DEC'])
+    ra = ("%.6f" % file[0].header['PLUG_RA'])
+    dec = ("%.6f" % file[0].header['PLUG_DEC'])
+
+    ra = float(ra)
+    dec = float(dec)
 
     found_count = 0
     coordinate_found = -1
     for i, x in enumerate(decs):
-        if (dec == (str)(x)) and (ra == (str)(ras[i])):
+        if (dec == float(x)) and (ra == float(ras[i])):
                 found_count += 1
                 coordinate_found = i
     if (found_count == 1):
