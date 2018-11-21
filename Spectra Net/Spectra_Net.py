@@ -1,6 +1,6 @@
 from astropy.io import fits
 import numpy as np
-from os import path
+from os import path, walk
 from glob import glob
 from class_Star import Make_Image, Make_Stars
 from multiprocessing import Process, Manager, Pool
@@ -15,8 +15,11 @@ if __name__ == "__main__":
         stars = manager.list()
 
         p = Pool()
-        for file_name in glob(path.join("..", "data", "*.fits")):
-            p.apply_async(Make_Stars, [file_name, stars, ras, decs, types])
+
+        for top, dirs, files in walk(path.join("..", "data")):
+            for file in files:
+                file_name = path.join(top, file)
+                p.apply_async(Make_Stars, [file_name, stars, ras, decs, types])
         p.close()
         p.join()
         print('stars = ', len(stars))
