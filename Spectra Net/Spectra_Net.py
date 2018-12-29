@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
         p = Pool()
 
-        for top, dirs, files in walk(path.join("..", "data")):
+        for top, dirs, files in walk(path.join("..", "data2")):
             for file in files:
                 file_name = path.join(top, file)
                 p.apply_async(Make_Stars, [file_name, stars, ras, decs, types])
